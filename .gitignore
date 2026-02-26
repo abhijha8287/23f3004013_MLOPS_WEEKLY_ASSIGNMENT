@@ -1,3 +1,40 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# =========================
+# Model Artifacts (Binary)
+# =========================
+*.pkl
+*.joblib
+*.h5
+
+# =========================
+# Feast / SQLite
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# =========================
+# DVC Cache (Keep .dvc files, ignore cache)
+# =========================
+.dvc/cache/
+.dvc/tmp/
+
+# =========================
+# Local datasets (if needed)
+# =========================
 iris.csv
 iris_v2.csv
-model.pkl
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
