@@ -1,0 +1,45 @@
+name: ML CI Pipeline
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest dvc[gcs] cml
+
+    - name: Configure GCP credentials
+      run: |
+        echo '${{ secrets.GCP_SA_KEY }}' > gcp_key.json
+        export GOOGLE_APPLICATION_CREDENTIALS=gcp_key.json
+
+    - name: Pull data from DVC
+      run: |
+        dvc pull
+
+    - name: Run tests
+      run: |
+        pytest tests/ > report.txt
+
+    - name: Create CML report
+      env:
+        REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "## CI Test Results" > report.md
+        cat report.txt >> report.md
+        cml comment create report.md
