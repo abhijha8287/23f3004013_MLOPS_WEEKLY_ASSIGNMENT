@@ -1,4 +1,3 @@
-
 name: ML CI Pipeline
 
 on:
@@ -27,6 +26,10 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
+
+    - name: Install CML
+      run: |
+        npm install -g @dvcorg/cml
 
     - name: Configure GCP credentials
       run: |
