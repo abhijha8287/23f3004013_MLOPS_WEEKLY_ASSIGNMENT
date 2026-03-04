@@ -42,7 +42,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest tests/ > report.txt
+        pytest tests/ | tee report.txt
 
     - name: Create CML report
       env:
