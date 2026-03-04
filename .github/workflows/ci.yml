@@ -27,10 +27,6 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Install CML
-      run: |
-        npm install -g @dvcorg/cml
-
     - name: Configure GCP credentials
       run: |
         echo '${{ secrets.GCP_SA_KEY }}' > gcp_key.json
@@ -44,11 +40,7 @@ jobs:
       run: |
         pytest tests/ | tee report.txt
 
-    - name: Create CML report
-      env:
-        REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Show test report
       run: |
-        echo "## CI Test Results" > report.md
-        echo "" >> report.md
-        cat report.txt >> report.md
-        cml comment create report.md
+        echo "CI Test Results"
+        cat report.txt
