@@ -15,6 +15,7 @@ The project demonstrates a production-style MLOps workflow including:
 - Remote storage integration with Google Cloud Storage
 - Feature Store integration using Feast (Offline + Online store)
 - Continuous Integration (CI) using GitHub Actions
+- Experiment tracking and model registry using MLflow
 
 ---
 
@@ -271,13 +272,13 @@ Created a CI workflow:
 
 Pipeline steps:
 
-1. Checkout repository
-2. Setup Python environment
-3. Install dependencies
-4. Authenticate with Google Cloud
-5. Pull data and models from DVC
-6. Run automated tests
-7. Display test report
+1. Checkout repository  
+2. Setup Python environment  
+3. Install dependencies  
+4. Authenticate with Google Cloud  
+5. Pull data and models from DVC  
+6. Run automated tests  
+7. Display test report  
 
 ---
 
@@ -330,16 +331,119 @@ This introduces **quality control into the ML pipeline**.
 
 ---
 
+# Week 5 – Experiment Tracking with MLflow
+
+## Objective
+Introduce MLflow for experiment tracking, hyperparameter tuning, and model registry management.
+
+This week replaces DVC model tracking with MLflow Model Registry.
+
+---
+
+## Task 1 – Hyperparameter Tuning
+
+Implemented hyperparameter tuning in the training pipeline.
+
+Multiple experiments were executed using different configurations of:
+
+- `n_estimators`
+- `max_depth`
+
+Each configuration produced a separate MLflow run.
+
+Example script:
+
+```
+train_mlflow.py
+```
+
+---
+
+## Task 2 – MLflow Experiment Logging
+
+MLflow was integrated into the training loop to log:
+
+- Hyperparameters
+- Evaluation metrics
+- Trained models
+
+Example logging:
+
+```
+mlflow.log_param()
+mlflow.log_metric()
+mlflow.sklearn.log_model()
+```
+
+Each run is stored under the MLflow experiment:
+
+```
+iris_experiments
+```
+
+---
+
+## Task 3 – Experiment Comparison
+
+MLflow UI was used to compare multiple experiment runs.
+
+The UI allows visualization of:
+
+- Parameters
+- Metrics
+- Run comparisons
+- Performance charts
+
+Example comparison metrics:
+
+| Run | n_estimators | max_depth | accuracy |
+|-----|-------------|-----------|----------|
+| Run1 | 50 | 3 | 1.0 |
+| Run2 | 100 | 5 | 1.0 |
+| Run3 | 150 | 7 | 1.0 |
+
+---
+
+## Task 4 – Removing Model Tracking from DVC
+
+Model tracking was removed from DVC.
+
+```
+git rm model.pkl.dvc
+rm model.pkl
+```
+
+From this point onward:
+
+- **DVC tracks only datasets**
+- **MLflow stores trained models**
+
+---
+
+## Task 5 – Model Retrieval from MLflow
+
+Inference pipeline was modified to fetch models directly from the MLflow Model Registry.
+
+Example:
+
+```python
+mlflow.pyfunc.load_model("models:/iris_classifier/latest")
+```
+
+This removes dependency on locally stored or DVC-tracked models.
+
+---
+
 # Final Repository Structure
 
 ```
 .
 ├── train.py
+├── train_mlflow.py
 ├── inference.py
 ├── requirements.txt
 ├── iris.csv.dvc
 ├── iris_v2.csv.dvc
-├── model.pkl.dvc
 ├── .dvc/
 ├── tests/
 │   ├── test_data.py
@@ -368,3 +472,5 @@ As per submission guidelines:
 - No dataset splits
 - No video screencast
 - No SQLite DB files
+- No MLflow experiment artifacts (`mlruns/`)
+- No MLflow database (`mlflow.db`)
