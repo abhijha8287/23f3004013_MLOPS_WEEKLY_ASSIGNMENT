@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import joblib
 import pandas as pd
 
-app = FastAPI(root_path="/proxy/8000")
+app = FastAPI()
 
 model = joblib.load("final_model.pkl")
 
