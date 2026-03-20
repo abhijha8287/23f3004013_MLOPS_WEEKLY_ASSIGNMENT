@@ -434,6 +434,48 @@ This removes dependency on locally stored or DVC-tracked models.
 
 ---
 
+
+
+# Week 6 – Docker & Kubernetes Deployment
+
+## Objective
+Deploy the IRIS ML model as a scalable API using Docker and Kubernetes.
+
+---
+
+## Task 1 – Pod vs Container
+Container runs the application, while a Pod is a Kubernetes unit that manages one or more containers with shared networking.
+
+---
+
+## Task 2 – Dockerfile
+Created a Dockerfile to package the FastAPI app with dependencies and expose it on port 8000.
+
+---
+
+## Task 3 – Service Account
+Created a GCP service account with required roles and stored its key in GitHub Secrets for secure access.
+
+---
+
+## Task 4 – CI/CD Pipeline
+Built a GitHub Actions workflow to automatically build and push the Docker image to Artifact Registry.
+
+---
+
+## Task 5 – GKE Deployment
+Deployed the container to GKE using Deployment and Service, exposing the API via an external IP.
+
+---
+
+## Output
+API successfully running on Kubernetes and accessible via public endpoint.
+
+---
+
+## Learnings
+Learned Docker, CI/CD automation, Kubernetes deployment, and cloud debugging.
+
 # Final Repository Structure
 
 ```
