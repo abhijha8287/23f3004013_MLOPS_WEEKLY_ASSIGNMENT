@@ -6,3 +6,8 @@ pytest==7.4.4
 dvc==3.48.4
 dvc-gs==3.0.1
 pathspec==0.11.2
+fastapi
+uvicorn
+mlflow
+pandas
+scikit-learn
