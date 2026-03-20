@@ -14,11 +14,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Google Cloud
-      uses: google-github-actions/setup-gcloud@v1
+    # ✅ IMPORTANT AUTH STEP
+    - name: Authenticate to GCP
+      uses: google-github-actions/auth@v1
       with:
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: project-393be603-6b75-4435-8cb
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
 
     - name: Configure Docker
       run: |
