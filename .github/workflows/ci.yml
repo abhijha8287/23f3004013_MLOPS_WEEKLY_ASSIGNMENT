@@ -2,10 +2,14 @@ name: ML CI Pipeline
 
 on:
   push:
+    branches:
+      - week_7
   pull_request:
 
 jobs:
+
   test:
+
     runs-on: ubuntu-latest
 
     steps:
@@ -13,7 +17,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Python
+    - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: "3.10"
@@ -26,6 +30,8 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
+        pip install pytest
+        pip install dvc
 
     - name: Configure GCP credentials
       run: |
@@ -40,7 +46,74 @@ jobs:
       run: |
         pytest tests/ | tee report.txt
 
-    - name: Show test report
+    - name: Show report
       run: |
-        echo "CI Test Results"
         cat report.txt
+
+
+  deploy:
+
+    needs: test
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Authenticate GCP
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+    - name: Setup gcloud
+      uses: google-github-actions/setup-gcloud@v2
+
+    - name: Install GKE plugin
+      run: |
+        gcloud components install gke-gcloud-auth-plugin
+
+    - name: Get GKE credentials
+      run: |
+        gcloud container clusters get-credentials iris-cluster \
+        --zone us-central1-a \
+        --project project-393be603-6b75-4435-8cb
+
+    - name: Deploy application
+      run: |
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+
+    - name: Check deployment
+      run: |
+        kubectl get pods
+        kubectl get svc
+
+
+  stress-test:
+
+    needs: deploy
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Install wrk
+      run: |
+        sudo apt update
+        sudo apt install -y wrk
+
+    - name: Wait for service warmup
+      run: |
+        sleep 40
+
+    - name: Create POST script
+      run: |
+        echo 'wrk.method = "POST"' >> post.lua
+        echo 'wrk.body   = "{\"sepal_length\":5.1,\"sepal_width\":3.5,\"petal_length\":1.4,\"petal_width\":0.2}"' >> post.lua
+        echo 'wrk.headers["Content-Type"] = "application/json"' >> post.lua
+
+    - name: Run stress test
+      run: |
+        wrk -t4 -c1000 -d30s -s post.lua http://34.63.149.185/predict
