@@ -476,6 +476,103 @@ API successfully running on Kubernetes and accessible via public endpoint.
 ## Learnings
 Learned Docker, CI/CD automation, Kubernetes deployment, and cloud debugging.
 
+
+
+
+# Week 8 – MLSecOps Assignment
+
+## Objective
+The objective of this assignment is to study security threats in ML systems and analyze how data poisoning affects model performance using the IRIS dataset.
+
+---
+
+## Task 1 – ML Threat Vectors
+
+### Data Poisoning
+Attack on training data by inserting incorrect samples to degrade model performance.
+
+### Adversarial Examples
+Small modifications to input data during inference that cause wrong predictions.
+
+### Model Extraction
+Attackers query deployed APIs repeatedly to approximate the model.
+
+### Prompt Injection
+Malicious prompts used to manipulate LLM outputs.
+
+---
+
+## Task 2 – Dataset Poisoning
+
+Created poisoned datasets with:
+- 5% corruption
+- 10% corruption
+- 50% corruption
+
+Poisoning method:
+- Random feature values generated
+- Random class labels assigned
+
+Script used:
+poison_data.py
+
+---
+
+## Task 3 – Training & MLflow Logging
+
+Model trained on:
+- Clean dataset (0%)
+- 5% poisoned dataset
+- 10% poisoned dataset
+- 50% poisoned dataset
+
+Metrics tracked:
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+
+Script used:
+train_poisoned.py
+
+---
+
+## Task 4 – Analysis
+
+Observations:
+- Model performance starts degrading around 10% poisoning.
+- Accuracy and F1 score decrease as poisoning increases.
+- At 50% poisoning, model performance becomes close to random.
+
+Conclusion:
+Model performance depends on data quality and clean data ratio.
+
+---
+
+## Task 5 – Mitigation Strategies
+
+Possible solutions:
+- Statistical data validation
+- Anomaly detection
+- Data provenance tracking
+- Schema validation
+
+Important insight:
+Increasing data quantity does not help if data quality is poor.
+
+---
+
+## Files Included
+
+poison_data.py  
+train_poisoned.py  
+iris.csv  
+iris_5.csv  
+iris_10.csv  
+iris_50.csv  
+
+---
+
 # Final Repository Structure
 
 ```
