@@ -40,3 +40,8 @@ iris_v2.csv
 Thumbs.db
 mlruns/
 mlflow.db
+
+mlruns/
+mlflow.db
+__pycache__/
+*.pyc
