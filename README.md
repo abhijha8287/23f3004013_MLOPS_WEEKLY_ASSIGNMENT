@@ -573,6 +573,90 @@ iris_50.csv
 
 ---
 
+## Week 9 – Explainability, Fairness & Drift
+
+### Objective
+In this week, we analyzed whether the model is fair, interpretable, and robust to changes in data.
+
+---
+
+### Task 1 – Sensitive Attribute (Location)
+
+- Added a new column `location` with values 0 and 1.
+- This attribute represents different groups.
+- It is **not used for training**, only for fairness evaluation.
+
+---
+
+### Task 2 – Fairness Analysis (Fairlearn)
+
+- Used `MetricFrame` from Fairlearn.
+- Evaluated:
+  - Accuracy
+  - Precision
+  - Recall
+
+- Compared performance across:
+  - Location = 0
+  - Location = 1
+
+**Observation:**
+- Metrics are nearly equal across groups.
+- Since location is randomly assigned, no bias is observed.
+
+---
+
+### Task 3 – Model Explainability (SHAP)
+
+- Used SHAP to understand feature importance.
+- Generated:
+  - `shap_summary.png`
+  - `shap_virginica.png`
+
+**Key Insights:**
+- Petal length and petal width are the most important features.
+- High values of these features push predictions toward **virginica**.
+- Low values push predictions away.
+
+---
+
+### Task 4 – Data Drift Detection
+
+- Simulated drift by increasing `petal_length`.
+- Compared original vs drifted distributions.
+- Generated `drift_plot.png`.
+
+**Observation:**
+- Distribution shift is clearly visible.
+- This represents **data drift**.
+
+---
+
+### Concepts Learned
+
+- **Explainability:** Understanding why a model makes predictions.
+- **Fairness:** Ensuring model performance is consistent across groups.
+- **Data Drift:** Changes in input data distribution over time.
+- **Concept Drift:** Change in relationship between input and output.
+
+---
+
+### Files Added
+
+- `fairness.py`
+- `shap_analysis.py`
+- `drift_detection.py`
+- `iris_with_location.csv`
+- `shap_summary.png`
+- `shap_virginica.png`
+- `drift_plot.png`
+
+---
+
+### Conclusion
+
+This week demonstrates how to make machine learning models more trustworthy by analyzing fairness, interpreting decisions, and detecting changes in data distributions.
+
 # Final Repository Structure
 
 ```
