@@ -657,6 +657,84 @@ In this week, we analyzed whether the model is fair, interpretable, and robust t
 
 This week demonstrates how to make machine learning models more trustworthy by analyzing fairness, interpreting decisions, and detecting changes in data distributions.
 
+## Week 10: LLMOps with Gemini Fine-Tuning
+
+### Overview
+In this assignment, we applied LLMOps concepts using Google Vertex AI. We fine-tuned a Gemini model on the IRIS dataset using two different data representations and compared their performance.
+
+---
+
+### Task 1: Prepare v1 (Raw Feature Format)
+
+- Converted IRIS dataset into JSONL format
+- Input: raw feature values as text
+- Output: species name
+
+Example: {"input_text": "sepal_length: 5.1, sepal_width: 3.5, petal_length: 1.4, petal_width: 0.2", "output_text": "setosa"}
+
+
+---
+
+### Task 2: Prepare v2 (Natural Language Format)
+
+- Converted dataset into human-readable descriptions
+- Output written as full sentence
+
+Example: {"input_text": "A flower has sepal length 5.1 cm, sepal width 3.5 cm, petal length 1.4 cm, and petal width 0.2 cm. Identify the species.", "output_text": "This is Iris setosa."}
+
+
+---
+
+### Task 3: Fine-Tuning on Vertex AI
+
+- Used Gemini 2.5 Flash model
+- Created two fine-tuning jobs:
+  - v1 (raw format)
+  - v2 (natural language format)
+- Both jobs completed successfully
+
+---
+
+### Task 4: Evaluation & Comparison
+
+- Tested both models using a held-out dataset
+- Evaluated using:
+  - Accuracy
+  - Precision & Recall
+  - Format Compliance
+
+#### Results:
+- Accuracy: **0.85**
+- Format Compliance: **0.85**
+
+---
+
+### Key Observations
+
+- Model correctly predicted most samples
+- Some errors were due to spelling issues (e.g., "verginica", "vericolor")
+- Shows that LLMs may understand correctly but fail in output format
+
+---
+
+### Conclusion
+
+- Natural language input (v2) works better with LLMs
+- LLM evaluation must include format correctness, not just accuracy
+- Data representation plays a key role in LLM performance
+
+---
+
+### Files Added
+
+- `prepare_v1.py`
+- `prepare_v2.py`
+- `evaluate_llm.py`
+- `test_data.py`
+- `test.csv`
+
+---
+
 # Final Repository Structure
 
 ```
